@@ -1,0 +1,2 @@
+include requirements.txt
+global-exclude __pycache__/*
