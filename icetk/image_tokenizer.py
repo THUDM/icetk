@@ -52,7 +52,7 @@ class ImageTokenizer(object):
         '''
         if len(image_torch.shape) == 3:
             image_torch = image_torch.unsqueeze(0)
-        img = self.tr_normalize(image_torch)
+        img = self.tr_normalize(image_torch).to(self.device)
         if self.fp16:
             img = img.half()
         with torch.no_grad():

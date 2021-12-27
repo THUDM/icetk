@@ -15,6 +15,7 @@ import requests
 
 from tqdm import tqdm
 import requests
+from filelock import FileLock
 
 def download_with_progress_bar(save_path, url):
     with requests.get(url, stream=True) as r:
@@ -33,10 +34,13 @@ MODEL_ULRS = {
 }
 
 def auto_create(file_path):
-    if os.path.exists(file_path):
-        return False 
-    else:
-        url = MODEL_ULRS[file_path.split('/')[-1]]
-        print(f'Downloading tokenizer models {url} into {file_path} ...')
-        download_with_progress_bar(file_path, url)
-        return True
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    lock = FileLock(file_path + '.lock')
+    with lock:
+        if os.path.exists(file_path):
+            return False 
+        else:
+            url = MODEL_ULRS[file_path.split('/')[-1]]
+            print(f'Downloading tokenizer models {url} into {file_path} ...')
+            download_with_progress_bar(file_path, url)
+            return True
