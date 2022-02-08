@@ -40,7 +40,7 @@ class IceTokenizer:
         if not hasattr(self, '_image_tokenizer'):
             fp = os.path.join(self.path, 'ice_image.pt')
             auto_create(fp)
-            self._image_tokenizer = ImageTokenizer(fp)
+            self._image_tokenizer = ImageTokenizer(fp, device=self.device, fp16=self.fp16)
         return self._image_tokenizer
     
     @property

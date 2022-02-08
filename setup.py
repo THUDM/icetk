@@ -13,7 +13,7 @@ def _requirements():
 
 setup(
     name="icetk",
-    version='0.0.1',
+    version='0.0.3',
     description="A unified tokenization tool for Images, Chinese and English.",
     long_description=Path("README.md").read_text(),
     long_description_content_type="text/markdown",
