@@ -33,4 +33,12 @@ img = icetk.decode(image_ids=ids, compress_rate=8)
 from torchvision.utils import save_image
 save_image(img, 'recover.jpg')
 
+# add special tokens
+icetk.add_special_tokens(['<start_of_image>', '<start_of_english>', '<start_of_chinese>'])
+
+# transform \n
+icetk.decode(icetk.encode('abc\nhi', ignore_linebreak=False))
+# 'abc\nhi'
+icetk.decode(icetk.encode('abc\nhi'))
+# 'abc hi'
 ```

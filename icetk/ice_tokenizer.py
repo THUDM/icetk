@@ -59,10 +59,12 @@ class IceTokenizer:
     
     def encode(self, text=None, 
                image_path=None, image_pil=None, image_torch=None, 
-               image_size: int=None, compress_rate=8):
+               image_size: int=None, compress_rate=8, ignore_linebreak=True):
         assert (text is None) + (image_path is None) + (image_pil is None) + (image_torch is None) == 3
         assert int(compress_rate) in [4, 8, 16]
         if text is not None:
+            if not ignore_linebreak:
+                text = text.replace('\n', '<n>')
             tmp = self.text_tokenizer.encode(text)
             return [x + self.num_image_tokens for x in tmp]
         else:
@@ -90,7 +92,7 @@ class IceTokenizer:
         assert (text_ids is None) + (image_ids is None) == 1
         if text_ids is not None:
             ids = [int(_id) - self.num_image_tokens for _id in text_ids]
-            return self.text_tokenizer.decode(ids)
+            return self.text_tokenizer.decode(ids).replace('<n>', '\n')
         else:
             return self.image_tokenizer.decode(image_ids, l=int(math.log2(compress_rate))-2)
             
