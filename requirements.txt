@@ -4,3 +4,4 @@ torchvision
 sentencepiece
 filelock
 protobuf<3.19
+google-api-python-client
