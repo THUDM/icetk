@@ -2,7 +2,7 @@
 '''
 @File    :   image_tokenizer.py
 @Time    :   2021/12/20 14:19:49
-@Author  :   Ming Ding 
+@Author  :   Ming Ding
 @Contact :   dm18@mails.tsinghua.edu.cn
 '''
 
@@ -14,7 +14,7 @@ import random
 
 import torch
 import torch.nn.functional as F
-from torchvision import transforms 
+from torchvision import transforms
 
 from .vqvae import load_default_HVQVAE, load_ckpt
 
@@ -27,9 +27,9 @@ class ImageTokenizer(object):
         model = load_ckpt(model, model_path)
         model = model.to(device)
         model.eval()
-        
+
         self.tr_normalize = transforms.Normalize(
-            [0.79093, 0.76271, 0.75340], 
+            [0.79093, 0.76271, 0.75340],
             [0.30379, 0.32279, 0.32800]
             )
 
@@ -37,7 +37,7 @@ class ImageTokenizer(object):
         self.device = device
         self.fp16 = fp16
         self.num_tokens = model.quantize.n_embed
-        
+
         if fp16:
             model = model.half()
 
@@ -66,7 +66,7 @@ class ImageTokenizer(object):
         '''
         if isinstance(codes, list):
             codes = torch.tensor(codes, dtype=torch.long, device=self.device)
-        if len(codes.shape) == 1:   
+        if len(codes.shape) == 1:
             codes = codes.unsqueeze(0)
         if len(codes.shape) == 2:
             s = int(math.sqrt(len(codes.view(-1))) + 1e-5)

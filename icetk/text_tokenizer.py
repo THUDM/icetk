@@ -2,7 +2,7 @@
 '''
 @File    :   text_tokenizer.py
 @Time    :   2021/12/20 01:26:12
-@Author  :   Ming Ding 
+@Author  :   Ming Ding
 @Contact :   dm18@mails.tsinghua.edu.cn
 '''
 
@@ -25,7 +25,7 @@ class TextTokenizer:
             proto_str = fin.read()
             self.proto.ParseFromString(proto_str)
         self.refresh()
-        
+
     def refresh(self):
         self.sp = spm.SentencePieceProcessor()
         self.sp.Load(model_proto=self.proto.SerializeToString())
@@ -56,6 +56,6 @@ class TextTokenizer:
 
     def convert_id_to_token(self, idx):
         return self.sp.IdToPiece(idx)
-    
+
     def __len__(self):
         return self.num_tokens

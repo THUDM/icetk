@@ -19,7 +19,7 @@ def new_module(config):
         raise KeyError("Expected key `target` to instantiate.")
     module, cls = config.get('target').rsplit(".", 1)
     model = getattr(importlib.import_module(module, package=__package__), cls)(**config.get("params", dict()))
-    
+
     return model
 
 def load_ckpt(model, path):
