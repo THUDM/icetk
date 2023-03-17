@@ -18,7 +18,7 @@ from .utils import auto_create
 class IceTokenizer:
     def __init__(self, path='~/.icetk_models', device='cuda', fp16=True):
         self.configure(path, device, fp16)
-        
+
     def configure(self, path=None, device=None, fp16=None):
         if path is not None:
             self.path = os.path.expanduser(path)
@@ -26,7 +26,7 @@ class IceTokenizer:
             self.device = device
         if fp16 is not None:
             self.fp16 = fp16
-            
+
     @property
     def text_tokenizer(self):
         if not hasattr(self, '_text_tokenizer'):
@@ -34,7 +34,7 @@ class IceTokenizer:
             auto_create(fp)
             self._text_tokenizer = TextTokenizer(fp)
         return self._text_tokenizer
-    
+
     @property
     def image_tokenizer(self):
         if not hasattr(self, '_image_tokenizer'):
@@ -42,23 +42,23 @@ class IceTokenizer:
             auto_create(fp)
             self._image_tokenizer = ImageTokenizer(fp, device=self.device, fp16=self.fp16)
         return self._image_tokenizer
-    
+
     @property
     def num_image_tokens(self):
         return 20000 # self.image_tokenizer.num_tokens # allow not load
-    
+
     @property
     def num_text_tokens(self):
         return self.text_tokenizer.num_tokens
     @property
     def num_tokens(self):
         return self.num_image_tokens + self.num_text_tokens
-        
+
     def add_special_tokens(self, special_tokens: List[str]):
         self.text_tokenizer.add_special_tokens(special_tokens)
-    
-    def encode(self, text=None, 
-               image_path=None, image_pil=None, image_torch=None, 
+
+    def encode(self, text=None,
+               image_path=None, image_pil=None, image_torch=None,
                image_size: int=None, compress_rate=8, ignore_linebreak=True):
         assert (text is None) + (image_path is None) + (image_pil is None) + (image_torch is None) == 3
         assert int(compress_rate) in [4, 8, 16]
@@ -86,7 +86,7 @@ class IceTokenizer:
             if need_norm_to_1:
                 image_torch /= 255.
             return self.image_tokenizer.encode(image_torch, l=int(math.log2(compress_rate))-2)
-            
+
 
     def decode(self, text_ids: List[int]=None, image_ids: Union[List[int], torch.LongTensor]=None, compress_rate=8):
         assert (text_ids is None) + (image_ids is None) == 1
@@ -95,7 +95,7 @@ class IceTokenizer:
             return self.text_tokenizer.decode(ids).replace('<n>', '\n')
         else:
             return self.image_tokenizer.decode(image_ids, l=int(math.log2(compress_rate))-2)
-            
+
     def tokenize(self, text):
         return self.text_tokenizer.tokenize(text)
 
@@ -112,5 +112,4 @@ class IceTokenizer:
                 return self.text_tokenizer.convert_token_to_id(x) + self.num_image_tokens
         else:
             raise ValueError('The key should be str or int.')
-        
-        
+

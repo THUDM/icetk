@@ -2,7 +2,7 @@
 '''
 @File    :   utils.py
 @Time    :   2021/12/22 23:00:33
-@Author  :   Ming Ding 
+@Author  :   Ming Ding
 @Contact :   dm18@mails.tsinghua.edu.cn
 '''
 
@@ -28,7 +28,7 @@ def download_with_progress_bar(save_path, url):
                     f.write(chunk)
                     pbar.update(len(chunk))
 
-MODEL_ULRS = {
+MODEL_URLS = {
     'ice_text.model': 'https://cloud.tsinghua.edu.cn/f/2c73ea6d3e7f4aed82ec/?dl=1',
     'ice_image.pt': 'https://cloud.tsinghua.edu.cn/f/ae2cd37af814429d875d/?dl=1'
 }
@@ -38,9 +38,9 @@ def auto_create(file_path):
     lock = FileLock(file_path + '.lock')
     with lock:
         if os.path.exists(file_path):
-            return False 
+            return False
         else:
-            url = MODEL_ULRS[file_path.split('/')[-1]]
+            url = MODEL_URLS[file_path.split('/')[-1]]
             print(f'Downloading tokenizer models {url} into {file_path} ...')
             download_with_progress_bar(file_path, url)
             return True
