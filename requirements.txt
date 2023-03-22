@@ -3,4 +3,4 @@ requests
 torchvision
 sentencepiece
 filelock
-protobuf==3.20.0
+protobuf==3.18
