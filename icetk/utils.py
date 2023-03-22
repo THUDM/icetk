@@ -40,7 +40,7 @@ def auto_create(file_path):
         if os.path.exists(file_path):
             return False 
         else:
-            url = MODEL_ULRS[file_path.split('/')[-1]]
+            url = MODEL_ULRS[os.path.basename(file_path)]
             print(f'Downloading tokenizer models {url} into {file_path} ...')
             download_with_progress_bar(file_path, url)
             return True
