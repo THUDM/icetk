@@ -38,6 +38,22 @@ class TextTokenizer:
             new_token.score = 0
             self.proto.pieces.append(new_token)
         self.refresh()
+    
+    def discourage_tokens(self, tokens):
+        if isinstance(tokens, str): # single token
+            tokens = [tokens]
+        for token in tokens:
+            for piece in self.proto.pieces:    
+                if piece.piece == token:
+                    piece.score = -100
+        self.refresh()
+    
+    def discourage_ids(self, ids):
+        if isinstance(ids, int):
+            ids = [ids]
+        for idx in ids:
+            self.proto.pieces[idx].score = -100
+        self.refresh()
 
     def encode(self, text):
         return self.sp.EncodeAsIds(text)

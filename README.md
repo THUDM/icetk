@@ -41,4 +41,11 @@ icetk.decode(icetk.encode('abc\nhi', ignore_linebreak=False))
 # 'abc\nhi'
 icetk.decode(icetk.encode('abc\nhi'))
 # 'abc hi'
+
+# discourage rare composed tokens
+icetk.tokenize('//--------')
+# ['▁//', '--------']
+icetk.text_tokenizer.discourage_ids(range(125653,130000)) # or use icetk.text_tokenizer.discourage_tokens
+icetk.tokenize('//--------')
+# ['▁//', '-', '-', '-', '-', '-', '-', '-', '-']
 ```
